@@ -1,5 +1,6 @@
 import streamlit as st
 
+import functions
 import utils
 
 
@@ -56,3 +57,11 @@ if __name__ == "__main__":
                     caption += f", {c}"
         st.image(image, caption=caption, use_column_width=True)
         utils.write_image_info_to_sidebar(image_path, image)
+
+        if option == "augmentation":
+            selected = functions.select_augmentation()
+            transforms = functions.collect_augmentation(selected)
+            if st.sidebar.button("Apply"):
+                circle_crop = "CircleCrop" in selected
+                augmented = functions.apply_augmentation(image, transforms, circle_crop)
+                st.image(augmented, caption=f"augmentation applied shape: {augmented.size}", use_column_width=True)
